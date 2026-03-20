@@ -1,0 +1,577 @@
+openapi: 3.1.0
+info:
+  title: Api
+  version: 0.1.0
+  description: LMPYOG Command Center API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: research
+    description: Research and investigation
+  - name: scripts
+    description: Script management
+  - name: clips
+    description: B-Roll clip management
+  - name: episodes
+    description: Episode tracking
+  - name: trends
+    description: Narrative trend tracking
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /research:
+    post:
+      operationId: runResearch
+      tags: [research]
+      summary: Run an investigative research query
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResearchRequest"
+      responses:
+        "200":
+          description: Research results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResearchResult"
+
+  /scripts:
+    get:
+      operationId: listScripts
+      tags: [scripts]
+      summary: List all saved scripts
+      responses:
+        "200":
+          description: List of scripts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Script"
+    post:
+      operationId: createScript
+      tags: [scripts]
+      summary: Save a new script draft
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateScriptRequest"
+      responses:
+        "201":
+          description: Script created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Script"
+
+  /scripts/{id}:
+    get:
+      operationId: getScript
+      tags: [scripts]
+      summary: Get a script by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Script
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Script"
+    put:
+      operationId: updateScript
+      tags: [scripts]
+      summary: Update a script
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateScriptRequest"
+      responses:
+        "200":
+          description: Updated script
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Script"
+    delete:
+      operationId: deleteScript
+      tags: [scripts]
+      summary: Delete a script
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /clips:
+    get:
+      operationId: listClips
+      tags: [clips]
+      summary: List all B-Roll clips
+      responses:
+        "200":
+          description: List of clips
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Clip"
+    post:
+      operationId: createClip
+      tags: [clips]
+      summary: Add a clip to the B-Roll library
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateClipRequest"
+      responses:
+        "201":
+          description: Clip created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Clip"
+
+  /clips/{id}:
+    delete:
+      operationId: deleteClip
+      tags: [clips]
+      summary: Delete a clip
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /episodes:
+    get:
+      operationId: listEpisodes
+      tags: [episodes]
+      summary: List all episodes
+      responses:
+        "200":
+          description: List of episodes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Episode"
+    post:
+      operationId: createEpisode
+      tags: [episodes]
+      summary: Create a new episode entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateEpisodeRequest"
+      responses:
+        "201":
+          description: Episode created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Episode"
+
+  /episodes/{id}:
+    put:
+      operationId: updateEpisode
+      tags: [episodes]
+      summary: Update an episode
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateEpisodeRequest"
+      responses:
+        "200":
+          description: Updated episode
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Episode"
+
+  /trends:
+    get:
+      operationId: listTrends
+      tags: [trends]
+      summary: List narrative trends
+      responses:
+        "200":
+          description: List of trends
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Trend"
+    post:
+      operationId: createTrend
+      tags: [trends]
+      summary: Add a narrative trend
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTrendRequest"
+      responses:
+        "201":
+          description: Trend created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Trend"
+
+  /trends/{id}:
+    delete:
+      operationId: deleteTrend
+      tags: [trends]
+      summary: Delete a trend
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    ResearchRequest:
+      type: object
+      properties:
+        query:
+          type: string
+          description: The investigation target or topic
+      required:
+        - query
+
+    ResearchResult:
+      type: object
+      properties:
+        query:
+          type: string
+        content:
+          type: string
+        sources:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+              uri:
+                type: string
+      required:
+        - query
+        - content
+        - sources
+
+    Script:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        episode:
+          type: string
+        content:
+          type: string
+        status:
+          type: string
+          enum: [draft, in-progress, final]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - title
+        - content
+        - status
+        - createdAt
+        - updatedAt
+
+    CreateScriptRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        episode:
+          type: string
+        content:
+          type: string
+        status:
+          type: string
+          enum: [draft, in-progress, final]
+      required:
+        - title
+        - content
+
+    UpdateScriptRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        episode:
+          type: string
+        content:
+          type: string
+        status:
+          type: string
+          enum: [draft, in-progress, final]
+
+    Clip:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        sourceUrl:
+          type: string
+        platform:
+          type: string
+          enum: [youtube, cspan, other]
+        timestamp:
+          type: string
+        keywords:
+          type: array
+          items:
+            type: string
+        transcript:
+          type: string
+        season:
+          type: string
+        notes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - title
+        - platform
+        - season
+        - keywords
+        - createdAt
+
+    CreateClipRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        sourceUrl:
+          type: string
+        platform:
+          type: string
+          enum: [youtube, cspan, other]
+        timestamp:
+          type: string
+        keywords:
+          type: array
+          items:
+            type: string
+        transcript:
+          type: string
+        season:
+          type: string
+        notes:
+          type: string
+      required:
+        - title
+        - platform
+        - season
+        - keywords
+
+    Episode:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        episodeNumber:
+          type: integer
+        season:
+          type: string
+        status:
+          type: string
+          enum: [planning, scripting, filming, editing, published]
+        scheduledDate:
+          type: string
+          format: date-time
+        publishedDate:
+          type: string
+          format: date-time
+        youtubeUrl:
+          type: string
+        topic:
+          type: string
+        notes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - title
+        - status
+        - season
+        - createdAt
+
+    CreateEpisodeRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        episodeNumber:
+          type: integer
+        season:
+          type: string
+        status:
+          type: string
+          enum: [planning, scripting, filming, editing, published]
+        scheduledDate:
+          type: string
+          format: date-time
+        topic:
+          type: string
+        notes:
+          type: string
+      required:
+        - title
+        - season
+
+    UpdateEpisodeRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        episodeNumber:
+          type: integer
+        season:
+          type: string
+        status:
+          type: string
+          enum: [planning, scripting, filming, editing, published]
+        scheduledDate:
+          type: string
+          format: date-time
+        publishedDate:
+          type: string
+          format: date-time
+        youtubeUrl:
+          type: string
+        topic:
+          type: string
+        notes:
+          type: string
+
+    Trend:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        volume:
+          type: string
+          enum: [Low, Medium, High]
+        sentiment:
+          type: string
+        active:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - title
+        - volume
+        - sentiment
+        - active
+        - createdAt
+
+    CreateTrendRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        volume:
+          type: string
+          enum: [Low, Medium, High]
+        sentiment:
+          type: string
+        active:
+          type: boolean
+      required:
+        - title
+        - volume
+        - sentiment

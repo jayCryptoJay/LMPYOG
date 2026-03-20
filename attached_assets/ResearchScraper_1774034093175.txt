@@ -1,0 +1,78 @@
+import os
+import requests
+import json
+import time
+
+# Let Me Put You On Game (LMPYOG) Research Automation Script
+# Purpose: Automatically search and compile primary source documentation for news distortion and foreign influence.
+
+def search_primary_sources(query):
+    """
+    Simulates an investigative search for primary source documents.
+    In a live environment, this would hit the Google Generative Language API
+    with grounding enabled to find real-time 2026 data.
+    """
+    print(f"[LMPYOG] Investigating: {query}...")
+    
+    # Empty string for environment provided key
+    api_key = ""
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key={api_key}"
+    
+    payload = {
+        "contents": [{
+            "parts": [{
+                "text": (
+                    f"ACT AS AN INVESTIGATIVE REPORTER. Provide a detailed report on the following topic "
+                    f"using only verifiable primary sources (FCC filings, FARA disclosures, SEC filings, "
+                    f"Congress.gov data): {query}. Focus on news distortion, foreign influence, and "
+                    f"billionaire media owners. Do not provide opinion. Provide THE GAME."
+                )
+            }]
+        }],
+        "tools": [{"google_search": {}}]
+    }
+
+    # Exponential backoff implementation
+    max_retries = 5
+    for attempt in range(max_retries):
+        try:
+            response = requests.post(url, json=payload)
+            if response.status_code == 200:
+                result = response.json()
+                content = result.get("candidates", [{}])[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+                sources = result.get("candidates", [{}])[0].get("groundingMetadata", {}).get("groundingAttributions", [])
+                return content, sources
+            elif response.status_code == 429:
+                time.sleep(2 ** attempt)
+            else:
+                break
+        except Exception as e:
+            time.sleep(2 ** attempt)
+
+    return "Error: Failed to retrieve the game. Check API and connection.", []
+
+def compile_dossier(topic):
+    content, sources = search_primary_sources(topic)
+    
+    filename = f"LMPYOG_Dossier_{topic.replace(' ', '_')}.txt"
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write(f"--- LMPYOG INVESTIGATIVE DOSSIER: {topic} ---\n\n")
+        f.write(content)
+        f.write("\n\n--- THE RECEIPTS (SOURCES) ---\n")
+        for s in sources:
+            f.write(f"- {s.get('web', {}).get('title')}: {s.get('web', {}).get('uri')}\n")
+            
+    print(f"\n[LMPYOG] Dossier compiled successfully: {filename}")
+
+if __name__ == "__main__":
+    # Example starting topics for the channel
+    topics = [
+        "FCC News Distortion warnings March 2026 Brendan Carr",
+        "FACT Act 2025 foreign influence disclosure list",
+        "Paramount CNN acquisition billionaire investors"
+    ]
+    
+    for t in topics:
+        compile_dossier(t)
+        time.sleep(2) # Prevent rate limiting
+

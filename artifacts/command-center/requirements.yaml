@@ -1,0 +1,12 @@
+packages:
+  "framer-motion": "For cyberpunk UI animations and page transitions"
+  "date-fns": "For formatting episode and clip dates"
+  "clsx": "For classname merging in UI components"
+  "tailwind-merge": "For classname merging in UI components"
+
+images: []
+
+notes:
+  - "Using existing brand assets from public/assets/ (banner.png, avatar.png, avatar-refined.png)"
+  - "React Query hooks are imported directly from @workspace/api-client-react as instructed"
+  - "Dark mode is the default and only mode for this ops center"
