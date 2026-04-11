@@ -1,0 +1,50 @@
+# Dependencies
+node_modules/
+
+# Next.js build artifacts
+dashboard/.next/
+dashboard/out/
+
+# Skill run logs — local only, may contain unreleased story topics
+dashboard/.state/
+
+# Environment / secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.p12
+
+# OS noise
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+
+# Generated outputs
+thumbnails/outputs/
+
+# Pre-publication content
+# These folders are gitignored by default to protect unreleased work.
+# Uncomment a line to start tracking that folder once you're ready.
+#
+# research/story-vault/
+# research/primary-docs/
+# research/weekly-briefs/
+# scripts/drafts/
+# scripts/final/
+# reference/voice-samples/
+
+# Misc
+*.bak
+*.tmp
