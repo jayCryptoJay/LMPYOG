@@ -7,7 +7,9 @@ Conservative-leaning commentary channel exposing fake news, dark money, politica
 
 ## Quick Start
 
+**New here? Start with the launch plan:** `LAUNCH-PLAN.md` — how to run the whole thing from zero (90-day arc, buffer rule, growth flywheel, first 7 days).
 **Full operating context:** `.claude/CLAUDE.md`
+**Content calendar & pillar rotation:** `research/CONTENT-CALENDAR.md`
 **Script template:** `scripts/templates/anchor-format.md`
 
 ---
